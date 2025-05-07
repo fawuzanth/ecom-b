@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,59 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom ecommerce colors
+				navy: {
+					DEFAULT: '#0f172a',
+					50: '#f8fafc',
+					100: '#f1f5f9',
+					200: '#e2e8f0',
+					300: '#cbd5e1',
+					400: '#94a3b8',
+					500: '#64748b',
+					600: '#475569',
+					700: '#334155',
+					800: '#1e293b',
+					900: '#0f172a'
+				},
+				sand: {
+					DEFAULT: '#f5f5f0',
+					50: '#fefefd',
+					100: '#fcfcfa',
+					200: '#f9f9f5',
+					300: '#f5f5f0',
+					400: '#e8e8e0',
+					500: '#d1d1c5',
+					600: '#b3b3a3',
+					700: '#96967f',
+					800: '#7c7c65',
+					900: '#5f5f4d'
+				},
+				coral: {
+					DEFAULT: '#f97066',
+					50: '#fff5f5',
+					100: '#ffe0e0',
+					200: '#ffc5c0',
+					300: '#ff9f95',
+					400: '#fa7a70',
+					500: '#f97066',
+					600: '#e13e32',
+					700: '#bc2b20',
+					800: '#991f16',
+					900: '#7e1a11'
+				},
+				teal: {
+					DEFAULT: '#0d9488',
+					50: '#f0fdfc',
+					100: '#cffcf1',
+					200: '#a5f5e5',
+					300: '#67e8d3',
+					400: '#2ed0bd',
+					500: '#14b8a5',
+					600: '#0d9488',
+					700: '#0f766e',
+					800: '#115e59',
+					900: '#134e4a'
 				}
 			},
 			borderRadius: {
@@ -70,25 +124,27 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				fadeIn: {
+					from: { opacity: '0' },
+					to: { opacity: '1' }
+				},
+				slideUp: {
+					from: { transform: 'translateY(10px)', opacity: '0' },
+					to: { transform: 'translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fadeIn 0.5s ease-out',
+				'slide-up': 'slideUp 0.5s ease-out'
 			}
 		}
 	},
