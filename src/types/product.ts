@@ -36,3 +36,26 @@ export interface CartItem {
   image: string;
   quantity: number;
 }
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin';
+}
+
+export interface CustomerUser {
+  id: string;
+  email: string;
+  name: string;
+  role: 'customer';
+}
+
+export type User = AdminUser | CustomerUser;
+
+export interface SavedItem {
+  productId: string;
+  variantId: string;
+  dateAdded: string;
+}
+
