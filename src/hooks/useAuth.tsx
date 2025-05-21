@@ -68,10 +68,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const userWithRole: User = {
           id: userId,
           email: session?.user?.email || '',
-          name: data.name || '',
+          name: data.name || session?.user?.user_metadata?.name || '',
           role: data.role === 'admin' ? 'admin' : 'customer'
         };
         setUser(userWithRole);
+        
+        // If role is not set yet, update it to default 'customer'
+        if (!data.role) {
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({ role: 'customer' })
+            .eq('id', userId);
+            
+          if (updateError) console.error('Error updating default role:', updateError);
+        }
       } else {
         // Default role is customer if no profile exists
         const userWithRole: CustomerUser = {
@@ -141,7 +151,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('id', data.user.id)
         .single();
       
-      if (profileError) throw profileError;
+      if (profileError) {
+        // If profile doesn't exist or no role, create it with default customer role
+        if (profileError.code === 'PGRST116') {
+          // No profile found, create one with customer role
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({ id: data.user.id, role: 'customer' });
+            
+          if (insertError) throw insertError;
+          
+          // Not an admin, sign out
+          await supabase.auth.signOut();
+          throw new Error("Unauthorized: Admin access required");
+        } else {
+          throw profileError;
+        }
+      }
       
       if (profileData?.role !== 'admin') {
         await supabase.auth.signOut();
@@ -180,6 +206,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       
       if (error) throw error;
+      
+      // Create profile with customer role
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .upsert({ 
+            id: data.user.id,
+            name: name,
+            role: 'customer'
+          });
+          
+        if (profileError) console.error("Error creating profile:", profileError);
+      }
       
       toast({
         title: "Registration successful",
