@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { AdminUser, CustomerUser, User } from "@/types/product";
@@ -64,6 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
       
       if (data) {
+        // Type-safe access to profile data
         const userWithRole: User = {
           id: userId,
           email: session?.user?.email || '',
@@ -168,7 +170,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
       
-      if (profileData?.role !== 'admin') {
+      if (!profileData || profileData.role !== 'admin') {
         await supabase.auth.signOut();
         throw new Error("Unauthorized: Admin access required");
       }
