@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { AdminUser, CustomerUser, User } from "@/types/product";
@@ -246,7 +245,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       description: "You have been successfully logged out.",
     });
   };
-  
+
   return (
     <AuthContext.Provider
       value={{

@@ -46,6 +46,8 @@ export type Database = {
           current_subscription_id: string | null
           description_count: number | null
           id: string
+          name: string | null
+          role: string | null
           seo_level: number | null
           seo_points: number | null
           subscription_end_date: string | null
@@ -58,6 +60,8 @@ export type Database = {
           current_subscription_id?: string | null
           description_count?: number | null
           id: string
+          name?: string | null
+          role?: string | null
           seo_level?: number | null
           seo_points?: number | null
           subscription_end_date?: string | null
@@ -70,6 +74,8 @@ export type Database = {
           current_subscription_id?: string | null
           description_count?: number | null
           id?: string
+          name?: string | null
+          role?: string | null
           seo_level?: number | null
           seo_points?: number | null
           subscription_end_date?: string | null
