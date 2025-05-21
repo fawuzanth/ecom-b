@@ -1,10 +1,11 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 type AuthMode = "login" | "register";
 
@@ -18,10 +19,17 @@ const AuthPage: React.FC = () => {
   
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, register } = useAuth();
+  const { login, register, isAuthenticated } = useAuth();
   
   // Get the return URL from location state, or default to "/"
   const from = ((location.state as any)?.from?.pathname) || "/";
+  
+  // If user is already logged in, redirect to home
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, from]);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +42,11 @@ const AuthPage: React.FC = () => {
       if (mode === "login") {
         success = await login(email, password);
       } else {
+        if (!name.trim()) {
+          setError("Name is required");
+          setIsSubmitting(false);
+          return;
+        }
         success = await register(email, password, name);
       }
       
@@ -117,7 +130,13 @@ const AuthPage: React.FC = () => {
                   placeholder={mode === "login" ? "Your password" : "Create a password"}
                   required
                   className="w-full"
+                  minLength={6}
                 />
+                {mode === "register" && (
+                  <p className="mt-1 text-xs text-gray-500">
+                    Password must be at least 6 characters long
+                  </p>
+                )}
               </div>
               
               <Button
@@ -125,11 +144,14 @@ const AuthPage: React.FC = () => {
                 disabled={isSubmitting}
                 className="w-full bg-navy hover:bg-navy-700 text-white py-3"
               >
-                {isSubmitting
-                  ? "Please wait..."
-                  : mode === "login"
-                  ? "Sign In"
-                  : "Create Account"}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <span>Please wait...</span>
+                  </>
+                ) : (
+                  <span>{mode === "login" ? "Sign In" : "Create Account"}</span>
+                )}
               </Button>
             </form>
             
@@ -158,13 +180,13 @@ const AuthPage: React.FC = () => {
             </div>
           </div>
           
-          {mode === "login" && (
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                Demo credentials: demo@example.com / password123
-              </p>
-            </div>
-          )}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-500">
+              {mode === "login" 
+                ? "Use Supabase authentication to sign in or create a new account." 
+                : "After registration, you may need to verify your email depending on Supabase settings."}
+            </p>
+          </div>
         </div>
       </div>
     </MainLayout>
