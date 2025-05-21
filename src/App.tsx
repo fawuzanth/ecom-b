@@ -12,6 +12,8 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import AuthPage from "./pages/AuthPage";
 import AccountPage from "./pages/AccountPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminProducts from "./pages/AdminProducts";
@@ -36,6 +38,8 @@ const App = () => (
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/account" element={<AccountPage />} />
               <Route path="/collections" element={<CollectionsPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
               
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
